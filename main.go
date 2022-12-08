@@ -25,14 +25,29 @@ func fillNewFileWith(data interface{}) {
 }
 
 func main() {
-	sourceMap := core.LoadSources("feed.json")
-	// core.GetAfter = time.Now().Add(- * time.Hour)
-	runner := core.NewRunner(64, sourceMap)
-	runner.DownloadFeeds(len(sourceMap))
-	runner.RetryFailed()
-	log.Printf("Failed: %d", len(runner.Failed))
-	articles := runner.Clean()
 
-	fillNewFileWith(articles)
+	ticker := time.NewTicker(10 * time.Minute)
+
+	runAggregator := func() {
+		sourceMap := core.LoadSources("feed.json")
+		runner := core.NewRunner(64, sourceMap)
+		runner.DownloadFeeds(len(sourceMap))
+		runner.RetryFailed()
+		log.Printf("Failed: %d", len(runner.Failed))
+		articles := runner.Clean()
+		fillNewFileWith(articles)
+	}
+
+	log.Printf("Iteration: %d", 0)
+	runAggregator()
+loop:
+	for i := 1; ; i++ {
+		<-ticker.C
+		log.Printf("Iteration: %d", i)
+		runAggregator()
+		if i == 10 {
+			break loop
+		}
+	}
 
 }

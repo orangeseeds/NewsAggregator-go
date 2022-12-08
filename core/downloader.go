@@ -138,7 +138,7 @@ func (r *Runner) setSchemeToHTTP(source *sourceInfo) {
 }
 
 func (r *Runner) Clean() map[string][]cleanedItem {
-	cleaner := NewFeedParser(r.Feeds, r.Sources, time.Now().Add(24*time.Hour))
+	cleaner := NewFeedParser(r.Feeds, r.Sources, time.Now().Add(10*time.Minute))
 	articleMap := cleaner.ParseRss()
 	return articleMap
 }

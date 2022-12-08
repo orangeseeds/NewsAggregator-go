@@ -81,8 +81,11 @@ type rssChannel struct {
 
 func LoadSources(file string) map[string]sourceInfo {
 	sourceMap := map[string]sourceInfo{}
-	jsonFeed, _ := ioutil.ReadFile(file)
-	err := json.Unmarshal(jsonFeed, &sourceMap)
+	jsonFeed, err := ioutil.ReadFile(file)
+	if err != nil {
+		panic(err)
+	}
+	err = json.Unmarshal(jsonFeed, &sourceMap)
 	if err != nil {
 		panic(err)
 	}
