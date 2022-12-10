@@ -20,6 +20,7 @@ type Runner struct {
 	task        *sync.WaitGroup
 	limit       chan bool
 	cleaner     feedParser
+	stop        chan bool
 }
 
 func NewRunner(concurreny int, sources map[string]sourceInfo) *Runner {

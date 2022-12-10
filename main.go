@@ -51,3 +51,28 @@ loop:
 	}
 
 }
+
+// t := time.NewTicker(1 * time.Second)
+// // runChan := make(chan bool, 1)
+
+// signalChan := make(chan os.Signal, 1)
+// signal.Notify(signalChan, os.Interrupt)
+
+// go func() {
+// 	for i := 6; i > 0; i-- {
+// 		<-t.C
+// 		log.Printf("Exiting after %d secs..", i)
+// 	}
+// 	// <-runChan
+// }()
+
+// smoothExit := func() {
+// 	sig := <-signalChan
+// 	t.Stop()
+// 	// close(runChan)
+// 	log.Println("Closing the program in 2 secs...: ", sig)
+// 	time.Sleep(2 * time.Second)
+// }
+// smoothExit()
+
+// go smoothExit()
