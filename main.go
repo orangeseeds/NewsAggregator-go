@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/orangeseeds/aggregator-go/core"
+	"github.com/orangeseeds/NewsAggregator-go/core"
 )
 
 func fillNewFileWith(data interface{}) {

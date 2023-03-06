@@ -1,4 +1,4 @@
-module github.com/orangeseeds/aggregator-go
+module github.com/orangeseeds/NewsAggregator-go
 
 go 1.19
 
