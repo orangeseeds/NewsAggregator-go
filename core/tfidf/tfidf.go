@@ -1,24 +1,17 @@
-package core
+package tfidf
 
 import (
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
 	"math"
 	"sort"
+	"strings"
 	"time"
 )
 
 type wordTfIdf struct {
 	nworld string
 	value  float64
-}
-
-func main() {
-	start := currentTimeMillis()
-	FeatureSelect(Load())
-
-	cost := currentTimeMillis() - start
-	fmt.Printf("time consuming %d ms ", cost)
-
 }
 
 type wordTfIdfs []wordTfIdf
@@ -41,7 +34,7 @@ func (us wordTfIdfs) Swap(i, j int) {
 func currentTimeMillis() int64 {
 	return time.Now().UnixNano() / 1000000
 }
-func FeatureSelect(list_words [][]string) {
+func FeatureSelect(list_words [][]string) wordTfIdfs {
 	docFrequency := make(map[string]float64, 0)
 	sumWorlds := 0
 	for _, wordList := range list_words {
@@ -51,13 +44,13 @@ func FeatureSelect(list_words [][]string) {
 		}
 	}
 	wordTf := make(map[string]float64)
-	for k, _ := range docFrequency {
+	for k := range docFrequency {
 		wordTf[k] = docFrequency[k] / float64(sumWorlds)
 	}
 	docNum := float64(len(list_words))
 	wordIdf := make(map[string]float64)
 	wordDoc := make(map[string]float64, 0)
-	for k, _ := range docFrequency {
+	for k := range docFrequency {
 		for _, v := range list_words {
 			for _, vs := range v {
 				if k == vs {
@@ -67,18 +60,19 @@ func FeatureSelect(list_words [][]string) {
 			}
 		}
 	}
-	for k, _ := range docFrequency {
+	for k := range docFrequency {
 		wordIdf[k] = math.Log(docNum / (wordDoc[k] + 1))
 	}
 	var wordifS wordTfIdfs
-	for k, _ := range docFrequency {
+	for k := range docFrequency {
 		var wti wordTfIdf
 		wti.nworld = k
 		wti.value = wordTf[k] * wordIdf[k]
 		wordifS = append(wordifS, wti)
 	}
 	sort.Sort(wordifS)
-	fmt.Println(wordifS)
+	// fmt.Println(wordifS)
+	return wordifS
 }
 
 func Load() [][]string {
@@ -89,6 +83,41 @@ func Load() [][]string {
 		{"stop", "posting", "stupid", "worthless", "garbage"},
 		{"mr", "licks", "ate", "my", "steak", "how", "to", "stop", "him"},
 		{"quit", "buying", "worthless", "dog", "food", "stupid"},
+		{"a", "language", "can", "be", "significantly", "reduced", "in", "a", "good", "programming", "environment"},
+		{"Programming", "environments", "are", "discussed", "in", "Section"},
+		{"Fourth", "the", "cost", "of", "executing", "programs", "written", "in", "a", "language", "is", "greatly", "influenced", "by", "that", "design"},
+		{"A", "language", "that", "requires", "many", "time", "type", "checks", "will", "prohibit", "fast", "code", "execution", "regardless", "of", "the", "quality", "of", "the", "compiler"},
+		{"Although", "execution", "efficiency", "was", "the", "foremost", "concern", "in", "the", "design", "of", "early", "languages", "it", "is", "now", "considered", "to", "be", "less", "important"},
 	}
 	return slice
+}
+
+func LoadText(text string) [][]string {
+	result := [][]string{}
+	sentences := strings.Split(text, ".")
+	for _, sentence := range sentences {
+		words := strings.Split(sentence, " ")
+		result = append(result, words)
+	}
+	return result
+}
+
+func LoadStopWords(path string) ([]string, error) {
+	var stopWords = map[string][]string{}
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(file, &stopWords)
+	if err != nil {
+		return nil, err
+	}
+
+	wordList, ok := stopWords["stop_words"]
+	if !ok {
+		return nil, err
+	}
+
+	return wordList, nil
 }

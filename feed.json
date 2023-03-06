@@ -1,25 +1,4 @@
 {
-  "https://brave.com/blog/index.xml": {
-    "category": "Brave",
-    "default": true,
-    "publisher_name": "Brave Blog",
-    "content_type": "article",
-    "publisher_domain": "https://brave.com/",
-    "publisher_id": "28227a306c2ca84c4f2ea3c18836a07946b1692eaaed2f28dcab030221748a7d",
-    "max_entries": 20,
-    "og_images": false,
-    "creative_instance_id": "",
-    "url": "https://brave.com/blog/index.xml",
-    "favicon_url": "https://brave.com/favicon.ico",
-    "cover_url": "https://pcdn.bravesoftware.com/brave-today/cover_images/aabb4fdc330135d2220d45703bcc147260a5cbe0eea81546cb35e78bfbd2444f.jpg.pad",
-    "background_color": "#fb2d04",
-    "destination_domains": "brave.com",
-    "channels": [
-      "Top Sources",
-      "Brave"
-    ],
-    "rank": null
-  },
   "https://rss.cnn.com/rss/cnn_topstories.rss": {
     "category": "Top News",
     "default": true,

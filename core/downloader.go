@@ -123,6 +123,7 @@ func (r *Runner) sendReq(url string) (*http.Response, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Printf("Error: %v\n", err)
+		return nil, err
 	}
 	r.setRequestHeaders(req)
 	resp, err := r.client.Do(req)
